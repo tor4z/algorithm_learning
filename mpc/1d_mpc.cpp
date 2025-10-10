@@ -20,8 +20,6 @@ float run_mpc(const Matrixf& x, const Matrixf& M, const Matrixf& C,
     const auto H{R_bar + C.t() * Q_bar * C};
     const auto E{C.t() * Q_bar * M};
 
-    std::cout << "H: " << H << "\n";
-    std::cout << "H.inv: " << H.inv() << "\n";
     return (H.inv() * E * x * -1.0f).at(0);
 }
 
