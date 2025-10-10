@@ -183,6 +183,7 @@ public:
     struct Ref
     {
         Ref& operator=(const Matrix& other);
+        Matrix matrix() const;
         inline void shape_check(i32 i)  const{ LINA_ASSERT(i >= 0 && i < row_ * col_); }
         inline void shape_check(i32 r, i32 c) const { LINA_ASSERT(r >= 0 && r < row_ && c >= 0 && c < col_); }
         inline T at(int r, int c) const { shape_check(r, c); return m_->at((row_start_ + r) * m_->col_ + (col_start_ + c)); }
@@ -242,6 +243,8 @@ public:
     Matrix operator+=(const Matrix& other);
     Matrix operator-=(const Matrix& other);
 
+    Matrix block(i32 start_r, i32 start_c, i32 r, i32 c) const;
+    Ref block(i32 start_r, i32 start_c, i32 r, i32 c);
     Matrix row(i32 i) const;
     Matrix col(i32 i) const;
     Ref row(i32 i);
@@ -266,6 +269,12 @@ private:
     i32 row_;
     i32 col_;
 }; // struct Matrix
+
+
+using Matrixi = Matrix<i32>;
+using Matrixf = Matrix<float>;
+using Matrixd = Matrix<double>;
+
 
 template<typename T>
 inline bool abs(T v) { return v < 0 ? -v : v; }
@@ -308,6 +317,18 @@ typename Matrix<T>::Ref& Matrix<T>::Ref::operator=(const Matrix& other)
 }
 
 template<typename T>
+Matrix<T> Matrix<T>::Ref::matrix() const
+{
+    Matrix<T> result(row_, col_);
+    for (i32 r = 0; r < row_; ++r) {
+        for (i32 c = 0; c < col_; ++c) {
+            result.at(r, c) = at(r, c);
+        }
+    }
+    return result;
+}
+
+template<typename T>
 Matrix<T>::Matrix(const Ref& other)
     : data_(other.col_ * other.row_)
     , row_(other.row_)
@@ -334,6 +355,31 @@ Matrix<T>& Matrix<T>::operator=(const Ref& other)
         }
     }
     return *this;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::block(i32 start_r, i32 start_c, i32 r, i32 c) const
+{
+    LINA_ASSERT(start_r >= 0 && start_r + r <= row_ && "Bad argument, row out of range");
+    LINA_ASSERT(start_c >= 0 && start_c + c <= col_ && "Bad argument, col out of range");
+    LINA_ASSERT(r > 0 && c > 0 && "Bad argument, bad block size");
+
+    Matrix<T> result(r, c);
+    for (i32 i = 0; i < r; ++i) {
+        for (i32 j = 0; j < c; ++j) {
+            result.at(i, j) = at(start_r + i, start_c + j);
+        }
+    }
+    return result;
+}
+
+template<typename T>
+typename Matrix<T>::Ref Matrix<T>::block(i32 start_r, i32 start_c, i32 r, i32 c)
+{
+    LINA_ASSERT(start_r >= 0 && start_r + r <= row_ && "Bad argument, row out of range");
+    LINA_ASSERT(start_c >= 0 && start_c + c <= col_ && "Bad argument, col out of range");
+    LINA_ASSERT(r > 0 && c > 0 && "Bad argument, bad block size");
+    return Ref(this, r, c, start_r, start_c);
 }
 
 template<typename T>
@@ -691,8 +737,8 @@ bool Matrix<T>::inv(Matrix& inv_m) const
             return false;
         }
 
-        Matrix<T> out(row_, col_);
-        out.at(0, 0) = 1 / at(0, 0);
+        inv_m.resize(row_, col_);
+        inv_m.at(0, 0) = 1 / at(0, 0);
         return true;
     }
 
@@ -864,7 +910,7 @@ Matrix<T> Matrix<T>::operator-=(const Matrix& other)
     return *this;
 }
 
-#ifdef LINA_ENABLE_OSTREAM
+#ifdef _GLIBCXX_OSTREAM
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Matrix<T>& m)
 {
@@ -877,7 +923,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<T>& m)
     os << "\n}";
     return os;
 }
-#endif // LINA_ENABLE_OSTREAM
+#endif // _GLIBCXX_OSTREAM
 
 } // namespace lina
 
