@@ -277,16 +277,16 @@ using Matrixd = Matrix<double>;
 
 
 template<typename T>
-inline bool abs(T v) { return v < 0 ? -v : v; }
+inline constexpr bool abs(T v) { return v < 0 ? -v : v; }
 
 template<typename T>
-inline bool is_0(T v) { return abs(v) <= EPS<T>::value(); }
+inline constexpr bool is_0(T v) { return abs(v) <= EPS<T>::value(); }
 
 template<typename T>
-inline T pow2(T v) { return v * v; }
+inline constexpr T pow2(T v) { return v * v; }
 
 template<typename T>
-inline T pow3(T v) { return v * v * v; }
+inline constexpr T pow3(T v) { return v * v * v; }
 
 template<typename Ts, typename Tm>
 Matrix<Tm> operator*(Ts scalar, const Matrix<Tm>& m)

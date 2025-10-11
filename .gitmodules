@@ -1,0 +1,3 @@
+[submodule "3rd/rviz.hpp"]
+	path = 3rd/rviz.hpp
+	url = git@github.com:tor4z/rviz.hpp.git
