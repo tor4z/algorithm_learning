@@ -6,8 +6,6 @@
 
 int main()
 {
-    std::cout << "Hello, AStar.\n";
-
     auto viz{rviz::Viz::instance()};
     rviz::GridMap2d map;
 
