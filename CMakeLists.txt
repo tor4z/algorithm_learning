@@ -1,12 +1,11 @@
-cmake_minimum_required(VERSION 3.8.0)
+cmake_minimum_required(VERSION 3.10.0)
 
 project(algorithm_learning)
 
 add_compile_options(-g)
 
 include_directories(
-    ${CMAKE_CURRENT_LIST_DIR}/3rd
-    ${CMAKE_CURRENT_LIST_DIR}/3rd/rviz.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/algorithm_utils
 )
 
 add_subdirectory(mpc)
