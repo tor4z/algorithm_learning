@@ -10,3 +10,4 @@ include_directories(
 
 add_subdirectory(mpc)
 add_subdirectory(a_star)
+add_subdirectory(bicycle_model)
