@@ -1,5 +1,7 @@
 add_executable(rspath
-    rspath.c
+    rspath.cpp
+    stb_styled.c
+    stb_styled.cpp
 )
 
 target_link_libraries(rspath
