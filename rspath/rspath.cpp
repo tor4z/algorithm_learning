@@ -10,12 +10,14 @@ int main()
     Turtle bob = {0};
     RsPath path;
 
-    rs_path_lprmlp(-3.0, 2.0, 0.0, &path);
-    turtle_arc(&bob, 1.0f, path.pattern_val[0]);
-    turtle_arc(&bob, -1.0f, path.pattern_val[1] * -1);
-    turtle_arc(&bob, 1.0f, path.pattern_val[2]);
+    rs_find_from_all_path(-3.0, 2.0, 0.0, &path);
+    printf("min path length: %f\n", path.length);
+    return 0;
+    turtle_arc(&bob, 1.0f, path.segs[0].val);
+    turtle_arc(&bob, -1.0f, path.segs[1].val * -1);
+    turtle_arc(&bob, 1.0f, path.segs[2].val);
 
-    printf("%f, %f, %f\n", path.pattern_val[0], path.pattern_val[1], path.pattern_val[2]);
+    printf("%f, %f, %f\n", path.segs[0].val, path.segs[1].val, path.segs[2].val);
     std::vector<float> xs;
     std::vector<float> ys;
     for (int i = 0; i < bob.trj.size; ++i) {
