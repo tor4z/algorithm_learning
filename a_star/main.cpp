@@ -156,7 +156,7 @@ bool HybridAStar::search()
     while (!pq.empty()) {
         const auto current{pq.top().state};
         pq.deque();
-        viz->draw_trj2d_point("test/trj", current.x, current.y);
+        viz->draw_trj2d_point_("test/trj", current.x, current.y);
         if (euclidean_dist(current, goal_) < short_distance) {
             break;
         }
@@ -226,7 +226,6 @@ void HybridAStar::find_neighbors(const State& current, std::vector<State>& neigh
 
 void HybridAStar::kinematic_model(State& state, float steer_angle, float moves)
 {
-    constexpr float dt{0.02f};          // sec.
     constexpr float wheel_base{2.8f};   // meter
 
     const float r{wheel_base / std::tan(steer_angle)};

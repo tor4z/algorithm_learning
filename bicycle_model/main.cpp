@@ -51,7 +51,7 @@ int main()
         rviz_state.steer_angle = model.state().steer_angle;
         rviz_state.heading = model.state().yaw;
         viz->draw_vehicle2d("test/veh", rviz_state);
-        viz->draw_trj2d_point("test/trj", rviz_state.x, rviz_state.y);
+        viz->draw_trj2d_point_("test/trj", rviz_state.x, rviz_state.y);
 
         viz->render();
         ++i;
